@@ -1,4 +1,5 @@
 ﻿using film_friendly_airports_app.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace film_friendly_airports_app.Services;
 
@@ -11,8 +12,24 @@ public class AirportService : IAirportService
         _database = database;
     }
 
-    public IEnumerable<Airport> GetAll()
+    public Airport GetAllById(int airportId)
     {
-        return _database.Airports.ToList<Airport>();
+        var data = _database.Airports.Where(a => a.AirportId == airportId)
+                                     .Include(a => a.Terminals)
+                                     .FirstOrDefault()!;
+        return data;
+    }
+
+    public Airport GetAirportById(int airportId)
+    {
+        var data = _database.Airports.Where(a => a.AirportId == airportId)
+                                     .FirstOrDefault()!;
+        return data;
+    }
+
+    public IEnumerable<Terminal> GetTerminalsByAirportId(int airportId)
+    {
+        var data = _database.Terminals.Where(t => t.AirportId == airportId);
+        return data;
     }
 }

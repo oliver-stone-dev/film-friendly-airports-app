@@ -7,6 +7,9 @@ public class Terminal
     [Key]
     public int TerminalId { get; set; }
 
+    [Required]
+    public string? Name { get; set; }
+
     [ForeignKey ("AirportId")]
     public int AirportId { get; set; }
 

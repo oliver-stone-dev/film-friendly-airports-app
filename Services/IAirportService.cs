@@ -4,5 +4,7 @@ namespace film_friendly_airports_app.Services;
 
 public interface IAirportService
 {
-    IEnumerable<Airport> GetAll();
+    Airport GetAllById(int airportId);
+    Airport GetAirportById(int airportId);
+    IEnumerable<Terminal> GetTerminalsByAirportId(int airportId);
 }

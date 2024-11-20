@@ -6,7 +6,7 @@ using film_friendly_airports_app.Models;
 
 namespace film_friendly_airports_app.Controllers;
 
-[Route("api/[controller]")]
+[Route("/airports")]
 [ApiController]
 public class AirportController : ControllerBase
 {
@@ -21,14 +21,34 @@ public class AirportController : ControllerBase
         _logger.LogInformation("Airport Controller Instantiated");
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<Airport>> GetAll()
+    [HttpGet("{id}")]
+    public ActionResult<Airport> GetAirportById(int id)
     {
-        _logger.LogInformation("Get Request Received");
+        _logger.LogInformation("Airport Get Request Received");
 
-        List<Airport> airports = _service.GetAll().ToList();
+        var data = _service.GetAirportById(id);
 
-        return Ok(airports);
+        if (data == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(data);
+    }
+
+    [HttpGet ("{id}/terminals")]
+    public ActionResult<IEnumerable<Terminal>> GetTerminalsByAirportId(int id)
+    {
+        _logger.LogInformation("Terminals Get Request Received");
+
+        var data = _service.GetTerminalsByAirportId(id);
+
+        if (data == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(data);
     }
 
 }
