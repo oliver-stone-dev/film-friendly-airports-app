@@ -1,0 +1,6 @@
+@film_friendly_airports_app_HostAddress = http://localhost:5115
+
+GET {{film_friendly_airports_app_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
