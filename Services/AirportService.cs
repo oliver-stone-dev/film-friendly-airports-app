@@ -26,10 +26,24 @@ public class AirportService : IAirportService
                                      .FirstOrDefault()!;
         return data;
     }
-
     public IEnumerable<Terminal> GetTerminalsByAirportId(int airportId)
     {
         var data = _database.Terminals.Where(t => t.AirportId == airportId);
+        return data;
+    }
+
+    public IEnumerable<Airport> Search(string text)
+    {
+        var lookupText = $"\"{text}*\"";
+
+        FormattableString query =
+            $@"SELECT * FROM dbo.Airports 
+            WHERE CONTAINS (Name,{lookupText}) 
+            OR CONTAINS (Code,{lookupText}) 
+            OR CONTAINS (Address,{lookupText});";
+
+        var data = _database.Airports.FromSql(query);
+
         return data;
     }
 }

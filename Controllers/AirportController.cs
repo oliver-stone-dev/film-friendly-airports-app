@@ -36,11 +36,9 @@ public class AirportController : ControllerBase
         return Ok(data);
     }
 
-    [HttpGet ("{id}/terminals")]
+    [HttpGet("{id}/terminals")]
     public ActionResult<IEnumerable<Terminal>> GetTerminalsByAirportId(int id)
     {
-        _logger.LogInformation("Terminals Get Request Received");
-
         var data = _service.GetTerminalsByAirportId(id);
 
         if (data == null)
@@ -51,4 +49,16 @@ public class AirportController : ControllerBase
         return Ok(data);
     }
 
+    [HttpGet]
+    public ActionResult<IEnumerable<Airport>> Search([FromQuery] string search)
+    {
+        var data = _service.Search(search);
+
+        if (data == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(data);
+    }
 }

@@ -22,7 +22,7 @@ public class Program
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         //Add services
-        builder.Services.AddScoped<ISearchService, SearchService>();
+        builder.Services.AddScoped<IReviewService, ReviewService>();
         builder.Services.AddScoped<IAirportService, AirportService>();
 
         var app = builder.Build();

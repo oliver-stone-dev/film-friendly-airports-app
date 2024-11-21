@@ -1,8 +1,8 @@
 ﻿using film_friendly_airports_app.Models;
-
 namespace film_friendly_airports_app.Services;
 
-public interface ISearchService
+public interface IReviewService
 {
-    IEnumerable<Airport> SearchForAirport(string text);
+    Review GetById(int id);
+    void AddReview(Review review);
 }
