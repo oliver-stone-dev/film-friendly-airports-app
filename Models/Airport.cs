@@ -1,6 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace film_friendly_airports_app.Models;
+
+public class AirportDTO
+{
+    public int AirportId { get; set; }
+    public string? Name { get; set; }
+    public string? Code { get; set; }
+}
+
 public class Airport
 {
     [Key]
