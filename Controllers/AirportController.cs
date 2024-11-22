@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using film_friendly_airports_app.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace film_friendly_airports_app.Controllers;
@@ -52,7 +53,7 @@ public class AirportController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<Airport>> Search([FromQuery] string search)
     {
-        var data = _service.Search(search);
+        var data = _service.SearchForAirport(search);
 
         if (data == null)
         {

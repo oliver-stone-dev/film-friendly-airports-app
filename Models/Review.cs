@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace film_friendly_airports_app.Models;
+
 public class Review
 {
     [Key]
@@ -17,6 +18,4 @@ public class Review
     public string? DateTime { get; set; }
 
     public string? Comment { get; set; }
-
-    public byte[]? Image { get; set; }
 }

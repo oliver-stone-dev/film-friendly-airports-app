@@ -5,24 +5,17 @@ namespace film_friendly_airports_app.Services;
 
 public class AirportService : IAirportService
 {
-    private readonly Database _database;
+    private readonly AppDbContext _database;
 
-    public AirportService(Database database)
+    public AirportService(AppDbContext database)
     {
         _database = database;
-    }
-
-    public Airport GetAllById(int airportId)
-    {
-        var data = _database.Airports.Where(a => a.AirportId == airportId)
-                                     .Include(a => a.Terminals)
-                                     .FirstOrDefault()!;
-        return data;
     }
 
     public Airport GetAirportById(int airportId)
     {
         var data = _database.Airports.Where(a => a.AirportId == airportId)
+                                     //.Include(a => a.Terminals)
                                      .FirstOrDefault()!;
         return data;
     }
@@ -32,7 +25,7 @@ public class AirportService : IAirportService
         return data;
     }
 
-    public IEnumerable<Airport> Search(string text)
+    public IEnumerable<Airport> SearchForAirport(string text)
     {
         var lookupText = $"\"{text}*\"";
 

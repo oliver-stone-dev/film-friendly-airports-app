@@ -5,23 +5,40 @@ namespace film_friendly_airports_app.Services;
 
 public class ReviewService : IReviewService
 {
-    private readonly Database _database;
+    private readonly AppDbContext _database;
+    private readonly ILogger _logger;
 
-    public ReviewService(Database database)
+    public ReviewService(AppDbContext database, ILogger<ReviewService> logger)
     {
         _database = database;
+        _logger = logger;
     }
 
     public Review GetById(int id)
     {
-        var data = _database.Reviews.Where(r => r.ReviewId == id).FirstOrDefault();
+        Review data = new();
+
+        try
+        {
+            data = _database.Reviews.Where(r => r.ReviewId == id).FirstOrDefault()!;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+        }
         return data!;
     }
 
     public void AddReview(Review review)
     {
-        _database.Reviews.Add(review);
-        _database.SaveChanges();
+        try 
+        {
+            _database.Reviews.Add(review);
+            _database.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+        }
     }
-
 }

@@ -1,5 +1,6 @@
 ﻿using film_friendly_airports_app.Models;
 using film_friendly_airports_app.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,12 +30,11 @@ public class ReviewController : ControllerBase
         return Ok(data);
     }
 
-    [HttpPut]
-    public ActionResult AddReview(Review review)
+    [HttpPost, Authorize]
+    public ActionResult<Review> Add(Review review)
     {
         _service.AddReview(review);
-        return CreatedAtAction("GetById",new Review { ReviewId = review.ReviewId},review);
+        return CreatedAtAction(nameof(GetById),new { id = review.ReviewId}, review);
     }
-
 }
 
