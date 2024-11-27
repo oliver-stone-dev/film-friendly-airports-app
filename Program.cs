@@ -30,6 +30,18 @@ public class Program
             options.OperationFilter<SecurityRequirementsOperationFilter>();
         });
 
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    //pass origin into new uri and check if localhost
+                    policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                });
+            });
+        }
+
         //Add identity core
         builder.Services.AddAuthorization();
         builder.Services.AddIdentityApiEndpoints<Account>()
@@ -55,6 +67,8 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.UseCors();
 
         app.MapControllers();
 
