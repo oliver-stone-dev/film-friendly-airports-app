@@ -20,7 +20,7 @@ public class ReviewService : IReviewService
 
         try
         {
-            data = _database.Reviews.Where(r => r.ReviewId == id).FirstOrDefault()!;
+            data = _database.Reviews.Where(r => r.Id == id).FirstOrDefault()!;
         }
         catch (Exception e)
         {

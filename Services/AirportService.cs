@@ -14,7 +14,7 @@ public class AirportService : IAirportService
 
     public Airport GetAirportById(int airportId)
     {
-        var data = _database.Airports.Where(a => a.AirportId == airportId)
+        var data = _database.Airports.Where(a => a.Id == airportId)
                                      //.Include(a => a.Terminals)
                                      .FirstOrDefault()!;
         return data;

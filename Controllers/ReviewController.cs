@@ -34,7 +34,7 @@ public class ReviewController : ControllerBase
     public ActionResult<Review> Add(Review review)
     {
         _service.AddReview(review);
-        return CreatedAtAction(nameof(GetById),new { id = review.ReviewId}, review);
+        return CreatedAtAction(nameof(GetById),new { id = review.Id}, review);
     }
 }
 

@@ -1,15 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using film_friendly_airports_app.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace film_friendly_airports_app.Models;
+namespace film_friendly_airports_app.DataTransferObjects;
 
-public class Airport
+public class AirportDTO
 {
-    [Key]
     public int Id { get; set; }
 
     public string? Name { get; set; }
 
-    [Required]
     public string? Code { get; set; }
 
     public string? Address { get; set; }
@@ -18,10 +17,5 @@ public class Airport
 
     public string? Telephone { get; set; }
 
-    [Required]
     public int NoTerminals { get; set; }
-
-    public byte[]? Image { get; set; }
-
-    public ICollection<Terminal> Terminals { get; } = new List<Terminal>();
 }

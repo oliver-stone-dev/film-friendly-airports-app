@@ -3,27 +3,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace film_friendly_airports_app.Models;
 
-public class Review
+public class Report
 {
+    
     [Key]
     public int Id { get; set; }
 
     [Required]
-    public int TerminalId { get; set; }
+    public int TypeId { get; set; }
 
     [Required]
-    [ForeignKey("Account")]
+    [ForeignKey ("Account")]
     public string? AccountId { get; set; }
 
     [Required]
-    public int Rating { get; set; }
+    public int TerminalId { get; set; }
 
-    [Required]
-    public string? DateTime { get; set; }
-
-    public string? Comment { get; set; }
-
+    public string? TimeStamp { get; set; }
+    public string? Status { get; set; }
     public Terminal? Terminal { get; set; }
-
     public Account? Account { get; set; }
+    public ReportType? Type { get; set; }
 }

@@ -15,18 +15,19 @@ namespace film_friendly_airports_app.Migrations
                 name: "Airports",
                 columns: table => new
                 {
-                    AirportId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Website = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NoTerminals = table.Column<int>(type: "int", nullable: false),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Airports", x => x.AirportId);
+                    table.PrimaryKey("PK_Airports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,10 +70,23 @@ namespace film_friendly_airports_app.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReportType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Terminals",
                 columns: table => new
                 {
-                    TerminalId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AirportId = table.Column<int>(type: "int", nullable: false),
@@ -81,12 +95,12 @@ namespace film_friendly_airports_app.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Terminals", x => x.TerminalId);
+                    table.PrimaryKey("PK_Terminals", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Terminals_Airports_AirportId",
                         column: x => x.AirportId,
                         principalTable: "Airports",
-                        principalColumn: "AirportId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -197,24 +211,66 @@ namespace film_friendly_airports_app.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Report",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TerminalId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Report", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Report_AspNetUsers_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Report_ReportType_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ReportType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Report_Terminals_TerminalId",
+                        column: x => x.TerminalId,
+                        principalTable: "Terminals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
-                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TerminalId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.ReviewId);
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_AspNetUsers_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reviews_Terminals_TerminalId",
                         column: x => x.TerminalId,
                         principalTable: "Terminals",
-                        principalColumn: "TerminalId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -258,6 +314,26 @@ namespace film_friendly_airports_app.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Report_AccountId",
+                table: "Report",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Report_TerminalId",
+                table: "Report",
+                column: "TerminalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Report_TypeId",
+                table: "Report",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_AccountId",
+                table: "Reviews",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_TerminalId",
                 table: "Reviews",
                 column: "TerminalId");
@@ -287,10 +363,16 @@ namespace film_friendly_airports_app.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Report");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "ReportType");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

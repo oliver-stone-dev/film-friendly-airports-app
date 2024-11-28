@@ -222,11 +222,11 @@ namespace film_friendly_airports_app.Migrations
 
             modelBuilder.Entity("film_friendly_airports_app.Models.Airport", b =>
                 {
-                    b.Property<int>("AirportId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AirportId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -247,18 +247,77 @@ namespace film_friendly_airports_app.Migrations
                     b.Property<string>("Telephone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AirportId");
+                    b.Property<string>("Website")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Airports");
                 });
 
-            modelBuilder.Entity("film_friendly_airports_app.Models.Review", b =>
+            modelBuilder.Entity("film_friendly_airports_app.Models.Report", b =>
                 {
-                    b.Property<int>("ReviewId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TerminalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("TerminalId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("film_friendly_airports_app.Models.ReportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportTypes");
+                });
+
+            modelBuilder.Entity("film_friendly_airports_app.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -273,7 +332,9 @@ namespace film_friendly_airports_app.Migrations
                     b.Property<int>("TerminalId")
                         .HasColumnType("int");
 
-                    b.HasKey("ReviewId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("TerminalId");
 
@@ -282,11 +343,11 @@ namespace film_friendly_airports_app.Migrations
 
             modelBuilder.Entity("film_friendly_airports_app.Models.Terminal", b =>
                 {
-                    b.Property<int>("TerminalId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TerminalId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AirportId")
                         .HasColumnType("int");
@@ -301,7 +362,7 @@ namespace film_friendly_airports_app.Migrations
                     b.Property<bool>("UsingCT")
                         .HasColumnType("bit");
 
-                    b.HasKey("TerminalId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AirportId");
 
@@ -359,22 +420,68 @@ namespace film_friendly_airports_app.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("film_friendly_airports_app.Models.Report", b =>
+                {
+                    b.HasOne("film_friendly_airports_app.Models.Account", "Account")
+                        .WithMany("Reports")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("film_friendly_airports_app.Models.Terminal", "Terminal")
+                        .WithMany("Reports")
+                        .HasForeignKey("TerminalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("film_friendly_airports_app.Models.ReportType", "Type")
+                        .WithMany("Reports")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Terminal");
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("film_friendly_airports_app.Models.Review", b =>
                 {
-                    b.HasOne("film_friendly_airports_app.Models.Terminal", null)
+                    b.HasOne("film_friendly_airports_app.Models.Account", "Account")
+                        .WithMany("Reviews")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("film_friendly_airports_app.Models.Terminal", "Terminal")
                         .WithMany("Reviews")
                         .HasForeignKey("TerminalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Terminal");
                 });
 
             modelBuilder.Entity("film_friendly_airports_app.Models.Terminal", b =>
                 {
-                    b.HasOne("film_friendly_airports_app.Models.Airport", null)
+                    b.HasOne("film_friendly_airports_app.Models.Airport", "Airport")
                         .WithMany("Terminals")
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Airport");
+                });
+
+            modelBuilder.Entity("film_friendly_airports_app.Models.Account", b =>
+                {
+                    b.Navigation("Reports");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("film_friendly_airports_app.Models.Airport", b =>
@@ -382,8 +489,15 @@ namespace film_friendly_airports_app.Migrations
                     b.Navigation("Terminals");
                 });
 
+            modelBuilder.Entity("film_friendly_airports_app.Models.ReportType", b =>
+                {
+                    b.Navigation("Reports");
+                });
+
             modelBuilder.Entity("film_friendly_airports_app.Models.Terminal", b =>
                 {
+                    b.Navigation("Reports");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

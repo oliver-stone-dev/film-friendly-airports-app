@@ -10,6 +10,8 @@ public class AppDbContext : IdentityDbContext<Account>
     public DbSet<Airport> Airports { get; set; }
     public DbSet<Terminal> Terminals { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Report> Reports { get; set; }
+    public DbSet<ReportType> ReportTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

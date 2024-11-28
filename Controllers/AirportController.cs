@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using film_friendly_airports_app.Models;
+using film_friendly_airports_app.DataTransferObjects;
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -23,7 +24,7 @@ public class AirportController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Airport> GetAirportById(int id)
+    public ActionResult<AirportDTO> GetAirportById(int id)
     {
         _logger.LogInformation("Airport Get Request Received");
 
@@ -34,7 +35,9 @@ public class AirportController : ControllerBase
             return NotFound();
         }
 
-        return Ok(data);
+        var dto = data.ToAirportDTO();
+
+        return Ok(dto);
     }
 
     [HttpGet("{id}/terminals")]
@@ -51,7 +54,7 @@ public class AirportController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Airport>> Search([FromQuery] string search)
+    public ActionResult<IEnumerable<AirportDTO>> Search([FromQuery] string search)
     {
         var data = _service.SearchForAirport(search);
 
@@ -60,6 +63,8 @@ public class AirportController : ControllerBase
             return NotFound();
         }
 
-        return Ok(data);
+        var dto = data.Select(a => a.ToAirportDTO());
+
+        return Ok(dto);
     }
 }
