@@ -1,4 +1,5 @@
-﻿using film_friendly_airports_app.Models;
+﻿using film_friendly_airports_app.DataTransferObjects;
+using film_friendly_airports_app.Models;
 using film_friendly_airports_app.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ public class ReviewController : ControllerBase
     }
 
     [HttpGet ("{id}")]
-    public ActionResult<Review> GetById(int id)
+    public ActionResult<ReviewDTO> GetById(int id)
     {
         var data = _service.GetById(id);
 
@@ -27,13 +28,19 @@ public class ReviewController : ControllerBase
             return NotFound();
         }
 
-        return Ok(data);
+        //get data transfer object
+        var dto = data.ToReviewDTO();
+
+        return Ok(dto);
     }
 
-    [HttpPost, Authorize]
-    public ActionResult<Review> Add(Review review)
+    [HttpPost]
+    public ActionResult<ReviewDTO> Add(ReviewDTO review)
     {
-        _service.AddReview(review);
+        var data = review.ToReview();
+
+        _service.AddReview(data);
+
         return CreatedAtAction(nameof(GetById),new { id = review.Id}, review);
     }
 }

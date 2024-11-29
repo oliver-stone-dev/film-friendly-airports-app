@@ -35,13 +35,14 @@ public class AirportController : ControllerBase
             return NotFound();
         }
 
+        //convert to data transfer object
         var dto = data.ToAirportDTO();
 
         return Ok(dto);
     }
 
     [HttpGet("{id}/terminals")]
-    public ActionResult<IEnumerable<Terminal>> GetTerminalsByAirportId(int id)
+    public ActionResult<IEnumerable<TerminalDTO>> GetTerminalsByAirportId(int id)
     {
         var data = _service.GetTerminalsByAirportId(id);
 
@@ -50,7 +51,10 @@ public class AirportController : ControllerBase
             return NotFound();
         }
 
-        return Ok(data);
+        //convert to data transfer object
+        var dto = data.Select(t => t.ToTerminalDTO());
+
+        return Ok(dto);
     }
 
     [HttpGet]
@@ -63,6 +67,7 @@ public class AirportController : ControllerBase
             return NotFound();
         }
 
+        //convert to data transfer object
         var dto = data.Select(a => a.ToAirportDTO());
 
         return Ok(dto);

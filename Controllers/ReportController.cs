@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using film_friendly_airports_app.Services;
 using film_friendly_airports_app.Models;
+using film_friendly_airports_app.DataTransferObjects;
 
 namespace film_friendly_airports_app.Controllers;
 
@@ -18,7 +19,7 @@ public class ReportController : ControllerBase
 
 
     [HttpGet]
-    public ActionResult<Report> GetById(int id)
+    public ActionResult<ReportDTO> GetById(int id)
     {
         var data = _service.GetById(id);
 
@@ -27,15 +28,19 @@ public class ReportController : ControllerBase
             return NotFound();
         }
 
+        var dto = data.ToReportDTO();
+
         return Ok(data);
     }
 
     [HttpPost]
-    public ActionResult<Report> Add(Report report)
+    public ActionResult<ReportDTO> Add(ReportDTO report)
     {
-        _service.AddReport(report);
+        var data = report.ToReport();
 
-        return CreatedAtAction(nameof(Report), new { id = report.Id}, report);
+        _service.AddReport(data);
+
+        return CreatedAtAction(nameof(GetById), new { id = report.Id}, report);
     }
 
 }
