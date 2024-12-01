@@ -34,6 +34,27 @@ public class ReviewController : ControllerBase
         return Ok(dto);
     }
 
+    [HttpGet]
+    public ActionResult<IEnumerable<ReviewDTO>> GetAll(
+        [FromQuery (Name = "airport")] int airportId, 
+        [FromQuery (Name = "terminal")] int terminalId,
+        [FromQuery] int offset,
+        [FromQuery] string? sort,
+        [FromQuery] int results = 10
+    )
+    {
+        var data = _service.GetFilteredReviews(airportId, terminalId, offset, results);
+
+        if (data == null)
+        {
+            return NotFound();
+        }
+
+        var dto = data.Select(r => r.ToReviewDTO()).ToList();
+
+        return Ok(dto);
+    }
+
     [HttpPost]
     public ActionResult<ReviewDTO> Add(ReviewDTO review)
     {

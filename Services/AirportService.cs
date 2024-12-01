@@ -19,13 +19,13 @@ public class AirportService : IAirportService
                                      .FirstOrDefault()!;
         return data;
     }
-    public IEnumerable<Terminal> GetTerminalsByAirportId(int airportId)
+    public List<Terminal> GetTerminalsByAirportId(int airportId)
     {
-        var data = _database.Terminals.Where(t => t.AirportId == airportId);
+        var data = _database.Terminals.Where(t => t.AirportId == airportId).ToList();
         return data;
     }
 
-    public IEnumerable<Airport> SearchForAirport(string text)
+    public List<Airport> SearchForAirport(string text)
     {
         var lookupText = $"\"{text}*\"";
 
@@ -35,7 +35,7 @@ public class AirportService : IAirportService
             OR CONTAINS (Code,{lookupText}) 
             OR CONTAINS (Address,{lookupText});";
 
-        var data = _database.Airports.FromSql(query);
+        var data = _database.Airports.FromSql(query).ToList();
 
         return data;
     }

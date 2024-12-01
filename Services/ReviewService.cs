@@ -41,4 +41,31 @@ public class ReviewService : IReviewService
             _logger.LogError(e.Message);
         }
     }
+
+    public List<Review> GetFilteredReviews(
+        int airportId,
+        int terminalId,
+        int offset,
+        int maxReturn)
+    {
+        List<Review> reviews = new();
+
+        try
+        {
+            reviews = _database.Reviews
+            .Where(r => 
+                (airportId == 0 || r.Terminal != null && r.Terminal.AirportId == airportId) &&
+                (terminalId == 0 || r.TerminalId == terminalId))
+            .Include(r => r.Terminal)
+            .Skip(offset)
+            .Take(maxReturn)
+            .ToList();
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return reviews;
+    }
 }
