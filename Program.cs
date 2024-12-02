@@ -37,7 +37,8 @@ public class Program
                 options.AddDefaultPolicy(policy =>
                 {
                     //pass origin into new uri and check if localhost
-                    policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                    policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                    .AllowAnyHeader();
                 });
             });
         }
