@@ -6,7 +6,7 @@ using film_friendly_airports_app.DataTransferObjects;
 
 namespace film_friendly_airports_app.Controllers;
 
-[Route("api/[controller]")]
+[Route("/report")]
 [ApiController]
 public class ReportController : ControllerBase
 {

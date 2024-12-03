@@ -65,7 +65,7 @@ public static class MappingExtensions
             TypeId = report.TypeId,
             AccountId = report.AccountId,
             TerminalId = report.TerminalId,
-            Status = report.Status,
+            Result = report.Result,
             TimeStamp = report.TimeStamp
         };
     }
@@ -78,7 +78,7 @@ public static class MappingExtensions
             TypeId = reportDTO.TypeId,
             AccountId = reportDTO.AccountId,
             TerminalId = reportDTO.TerminalId,
-            Status = reportDTO.Status,
+            Result = reportDTO.Result,
             TimeStamp = reportDTO.TimeStamp
         };
     }

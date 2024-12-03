@@ -47,6 +47,10 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Services.AddIdentityApiEndpoints<Account>()
             .AddEntityFrameworkStores<AppDbContext>();
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+        });
 
         //Add database context with default connection string
         builder.Services.AddDbContext<AppDbContext>(options =>
