@@ -55,6 +55,7 @@ public class ReviewController : ControllerBase
         return Ok(dto);
     }
 
+    [Authorize]
     [HttpPost]
     public ActionResult<ReviewDTO> Add(ReviewDTO review)
     {

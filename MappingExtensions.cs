@@ -108,4 +108,22 @@ public static class MappingExtensions
             TerminalId = reviewDTO.TerminalId
         };
     }
+
+    public static AccountDTO ToAccountDTO(this Account account)
+    {
+        return new AccountDTO
+        {
+            Id = account.Id,
+            Email = account.Email
+        };
+    }
+
+    public static Account ToAccount(this AccountDTO accountDTO)
+    {
+        return new Account
+        {
+            Id = accountDTO.Id!,
+            Email = accountDTO.Email
+        };
+    }
 }
