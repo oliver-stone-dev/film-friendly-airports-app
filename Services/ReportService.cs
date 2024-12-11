@@ -1,4 +1,5 @@
 ﻿using film_friendly_airports_app.Models;
+using Microsoft.Identity.Client;
 
 namespace film_friendly_airports_app.Services;
 
@@ -16,6 +17,12 @@ public class ReportService : IReportService
     public Report GetById(int id)
     {
         var data = _database.Reports.Where(r => r.Id == id).FirstOrDefault()!;
+        return data;
+    }
+
+    public List<Report> GetAllTerminalReports(int terminalId)
+    {
+        var data = _database.Reports.Where(r => r.TerminalId == terminalId).ToList();
         return data;
     }
 

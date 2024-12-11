@@ -20,7 +20,6 @@ public class Report
     public int TerminalId { get; set; }
 
     public string? TimeStamp { get; set; }
-    public bool Result { get; set; }
     public Terminal? Terminal { get; set; }
     public Account? Account { get; set; }
     public ReportType? Type { get; set; }

@@ -42,7 +42,7 @@ public class AirportController : ControllerBase
     }
 
     [HttpGet("{id}/terminals")]
-    public ActionResult<IEnumerable<TerminalDTO>> GetTerminalsByAirportId(int id)
+    public ActionResult<IEnumerable<TerminalDTO>> GetTerminalsByAirportId(int id, [FromQuery]int terminalId = 0)
     {
         var data = _service.GetTerminalsByAirportId(id);
 
@@ -51,8 +51,11 @@ public class AirportController : ControllerBase
             return NotFound();
         }
 
+        //Filter terminal id
+        var filtered = data.Where(t => (terminalId == 0) || (terminalId == t.Id)).ToList();
+
         //convert to data transfer object
-        var dto = data.Select(t => t.ToTerminalDTO());
+        var dto = filtered.Select(t => t.ToTerminalDTO());
 
         return Ok(dto);
     }

@@ -11,5 +11,4 @@ public class ReportDTO
     public string? AccountId { get; set; }
     public int TerminalId { get; set; }
     public string? TimeStamp { get; set; }
-    public bool Result { get; set; }
 }

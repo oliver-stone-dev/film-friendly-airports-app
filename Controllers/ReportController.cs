@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using film_friendly_airports_app.Services;
 using film_friendly_airports_app.Models;
 using film_friendly_airports_app.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Client;
 
 namespace film_friendly_airports_app.Controllers;
 
@@ -18,7 +20,7 @@ public class ReportController : ControllerBase
     }
 
 
-    [HttpGet]
+    [HttpGet ("{id}")]
     public ActionResult<ReportDTO> GetById(int id)
     {
         var data = _service.GetById(id);
@@ -33,6 +35,33 @@ public class ReportController : ControllerBase
         return Ok(data);
     }
 
+    [HttpGet]
+    public ActionResult<IEnumerable<ReportDTO>> Get([FromQuery] int terminalId = 0,
+                                                    [FromQuery] string accountId = null!, 
+                                                    [FromQuery] int type = 0)
+    {
+        if (terminalId == 0)
+        {
+            return NotFound();
+        }
+
+        var accountReports = _service.GetAllTerminalReports(terminalId);
+
+        var report = accountReports.Where(r => (String.IsNullOrEmpty(accountId)) || r.AccountId == accountId)
+                                   .Where(r => (type == 0) || r.TypeId == type)
+                                   .ToList();
+
+        if (report == null)
+        {
+            return NotFound();
+        }
+
+        var reportDTOs = report.Select(r => r.ToReportDTO()).ToList();
+
+        return Ok(reportDTOs);
+    }
+
+    [Authorize]
     [HttpPost]
     public ActionResult<ReportDTO> Add(ReportDTO report)
     {
