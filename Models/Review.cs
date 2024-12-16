@@ -16,7 +16,7 @@ public class Review
     public string? AccountId { get; set; }
 
     [Required]
-    public int Rating { get; set; }
+    public bool Recommended { get; set; }
 
     [Required]
     public string? DateTime { get; set; }

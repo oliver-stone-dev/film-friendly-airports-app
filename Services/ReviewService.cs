@@ -1,5 +1,6 @@
 ﻿using film_friendly_airports_app.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace film_friendly_airports_app.Services;
 
@@ -68,4 +69,60 @@ public class ReviewService : IReviewService
 
         return reviews;
     }
+
+    public int GetAirportReviewCount(int airportId)
+    {
+        try
+        {
+            var count = _database.Reviews
+                .Where(r => (r.Terminal != null) && (r.Terminal.AirportId == airportId))
+                .Include(r => r.Terminal)
+                .ToList()
+                .Count();
+
+            return count;
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+    }
+
+    public int GetAccountReviewCount(string accountId)
+    {
+        try
+        {
+            var count = _database.Reviews
+                .Where(r => (r.Account != null) && (r.Account.Id == accountId))
+                .Include(r => r.Account)
+                .ToList()
+                .Count();
+
+            return count;
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+    }
+
+    public double GetAirportRatingAvg(int airportId)
+    {
+        try
+        {
+            var airportReviews = _database.Reviews
+                .Where(r => (r.Terminal != null) && (r.Terminal.AirportId == airportId))
+                .Include(r => r.Terminal)
+                .ToList();
+
+            var positiveReviews = airportReviews.Where(r => r.Recommended == true).ToList().Count();
+
+            return (double)positiveReviews / (double)airportReviews.Count();
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+    }
+
 }

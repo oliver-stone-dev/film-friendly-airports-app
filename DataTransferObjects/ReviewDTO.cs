@@ -9,7 +9,7 @@ public class ReviewDTO
     public int Id { get; set; }
     public int TerminalId { get; set; }
     public string? AccountId { get; set; }
-    public int Rating { get; set; }
+    public bool Recommended { get; set; }
     public string? DateTime { get; set; }
     public string? Comment { get; set; }
 }

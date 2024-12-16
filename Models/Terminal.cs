@@ -13,11 +13,6 @@ public class Terminal
     [Required]
     public int AirportId { get; set; }
 
-    [Required]
-    public bool UsingCT { get; set; }
-
-    public string? ScannerType { get; set; }
-
     public ICollection<Review> Reviews { get; } = new List<Review>();
     public ICollection<Report> Reports { get; } = new List<Report>();
 

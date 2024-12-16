@@ -12,16 +12,9 @@ public class Airport
     [Required]
     public string? Code { get; set; }
 
-    public string? Address { get; set; }
+    public string? Country { get; set; }
 
     public string? Website { get; set; }
-
-    public string? Telephone { get; set; }
-
-    [Required]
-    public int NoTerminals { get; set; }
-
-    public byte[]? Image { get; set; }
 
     public ICollection<Terminal> Terminals { get; } = new List<Terminal>();
 }

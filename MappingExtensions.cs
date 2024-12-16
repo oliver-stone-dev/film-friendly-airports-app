@@ -11,11 +11,9 @@ public static class MappingExtensions
         {
             Id = airport.Id,
             Name = airport.Name,
-            Address = airport.Address,
             Code = airport.Code,
-            NoTerminals = airport.NoTerminals,
-            Telephone = airport.Telephone,
-            Website = airport.Website
+            Website = airport.Website,
+            Country = airport.Country
         };
     }
 
@@ -25,11 +23,9 @@ public static class MappingExtensions
         {
             Id = airportDTO.Id,
             Name = airportDTO.Name,
-            Address = airportDTO.Address,
             Code = airportDTO.Code,
-            NoTerminals = airportDTO.NoTerminals,
-            Telephone = airportDTO.Telephone,
-            Website = airportDTO.Website
+            Website = airportDTO.Website,
+            Country = airportDTO.Country
         };
     }
 
@@ -39,9 +35,7 @@ public static class MappingExtensions
         {
             Id = terminal.Id,
             Name = terminal.Name,
-            AirportId = terminal.AirportId,
-            ScannerType = terminal.ScannerType,
-            UsingCT = terminal.UsingCT
+            AirportId = terminal.AirportId
         };
     }
 
@@ -51,9 +45,7 @@ public static class MappingExtensions
         {
             Id = terminalDTO.Id,
             Name = terminalDTO.Name,
-            AirportId = terminalDTO.AirportId,
-            ScannerType = terminalDTO.ScannerType,
-            UsingCT = terminalDTO.UsingCT
+            AirportId = terminalDTO.AirportId
         };
     }
 
@@ -89,7 +81,7 @@ public static class MappingExtensions
             AccountId = review.AccountId,
             Comment = review.Comment,
             DateTime = review.DateTime,
-            Rating = review.Rating,
+            Recommended = review.Recommended,
             TerminalId = review.TerminalId
         };
     }
@@ -102,7 +94,7 @@ public static class MappingExtensions
             AccountId = reviewDTO.AccountId,
             Comment = reviewDTO.Comment,
             DateTime = reviewDTO.DateTime,
-            Rating = reviewDTO.Rating,
+            Recommended = reviewDTO.Recommended,
             TerminalId = reviewDTO.TerminalId
         };
     }

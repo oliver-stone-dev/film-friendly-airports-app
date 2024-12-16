@@ -7,5 +7,11 @@ public interface IReviewService
 
     List<Review> GetFilteredReviews(int airportId,int terminalId,int offset,int maxReturn);
 
+    int GetAirportReviewCount(int airportId);
+
+    int GetAccountReviewCount(string accountId);
+
+    double GetAirportRatingAvg(int airportId);
+
     void AddReview(Review review);
 }

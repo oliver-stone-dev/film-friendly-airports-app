@@ -12,12 +12,14 @@ namespace film_friendly_airports_app.Controllers;
 [ApiController]
 public class AirportController : ControllerBase
 {
-    private readonly IAirportService _service;
+    private readonly IAirportService _airportService;
+    private readonly IReviewService _reviewService;
     private readonly ILogger<AirportController> _logger;
 
-    public AirportController(IAirportService service, ILogger<AirportController> logger)
+    public AirportController(IAirportService airportService, IReviewService reviewService, ILogger<AirportController> logger)
     {
-        _service = service;
+        _reviewService = reviewService;
+        _airportService = airportService;
         _logger = logger;
 
         _logger.LogInformation("Airport Controller Instantiated");
@@ -28,7 +30,7 @@ public class AirportController : ControllerBase
     {
         _logger.LogInformation("Airport Get Request Received");
 
-        var data = _service.GetAirportById(id);
+        var data = _airportService.GetAirportById(id);
 
         if (data == null)
         {
@@ -41,10 +43,26 @@ public class AirportController : ControllerBase
         return Ok(dto);
     }
 
+
+    [HttpGet("{id}/stats")]
+    public ActionResult<AirportStatsDTO> GetAirportStatsById(int id)
+    {
+        var totalReviews = _reviewService.GetAirportReviewCount(id);
+        var averageRating = _reviewService.GetAirportRatingAvg(id);
+
+        var statsDTO = new AirportStatsDTO
+        {
+            AverageRating = averageRating,
+            TotalReviews = totalReviews
+        };
+
+        return Ok(statsDTO);
+    }
+
     [HttpGet("{id}/terminals")]
     public ActionResult<IEnumerable<TerminalDTO>> GetTerminalsByAirportId(int id, [FromQuery]int terminalId = 0)
     {
-        var data = _service.GetTerminalsByAirportId(id);
+        var data = _airportService.GetTerminalsByAirportId(id);
 
         if (data == null)
         {
@@ -63,7 +81,7 @@ public class AirportController : ControllerBase
     [HttpGet]
     public ActionResult<IEnumerable<AirportDTO>> Search([FromQuery] string search)
     {
-        var data = _service.SearchForAirport(search);
+        var data = _airportService.SearchForAirport(search);
 
         if (data == null)
         {
