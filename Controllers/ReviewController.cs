@@ -46,7 +46,8 @@ public class ReviewController : ControllerBase
             return NotFound();
         }
 
-        var name = await _userManager.GetUserNameAsync(user);
+        var name = user.DisplayName;
+
         var reviews = _reviewService.GetAccountReviewCount(accountId);
 
         var details = new ReviewDetailsDTO

@@ -104,7 +104,8 @@ public static class MappingExtensions
         return new AccountDTO
         {
             Id = account.Id,
-            Email = account.Email
+            Email = account.Email,
+            DisplayName = account.DisplayName
         };
     }
 
@@ -113,7 +114,8 @@ public static class MappingExtensions
         return new Account
         {
             Id = accountDTO.Id!,
-            Email = accountDTO.Email
+            Email = accountDTO.Email,
+            DisplayName = accountDTO.DisplayName
         };
     }
 }
