@@ -19,7 +19,7 @@ public class Review
     public bool Recommended { get; set; }
 
     [Required]
-    public string? DateTime { get; set; }
+    public DateTime DateTime { get; set; }
 
     public string? Comment { get; set; }
 

@@ -19,7 +19,7 @@ public class Report
     [Required]
     public int TerminalId { get; set; }
 
-    public string? TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; }
     public Terminal? Terminal { get; set; }
     public Account? Account { get; set; }
     public ReportType? Type { get; set; }

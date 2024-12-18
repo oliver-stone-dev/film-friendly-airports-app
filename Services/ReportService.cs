@@ -1,5 +1,8 @@
-﻿using film_friendly_airports_app.Models;
+﻿using film_friendly_airports_app.DataTransferObjects;
+using film_friendly_airports_app.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Identity.Client;
+using Microsoft.EntityFrameworkCore;
 
 namespace film_friendly_airports_app.Services;
 
@@ -23,6 +26,34 @@ public class ReportService : IReportService
     public List<Report> GetAllTerminalReports(int terminalId)
     {
         var data = _database.Reports.Where(r => r.TerminalId == terminalId).ToList();
+        return data;
+    }
+    public List<ReportAlertDTO> GetReportAlertsForTerminal(int terminaldId)
+    {
+        const int minDays = 7;
+        const int minReports = 5;
+        var data = new List<ReportAlertDTO>();
+
+        var latest = _database.Reports.Where(r => r.TerminalId == terminaldId && 
+                                       EF.Functions.DateDiffDay(r.TimeStamp, DateTime.Now) < minDays)
+                                      .ToList();
+
+        foreach(var type in _database.ReportTypes)
+        {
+            var getReports = latest.Where(r => r.Type != null && r.Type.Id == type.Id).ToList();
+
+            if (getReports.Count() > minReports)
+            {
+                data.Add
+                (
+                    new ReportAlertDTO
+                    {
+                        Text = type.AlertText
+                    }
+                );
+            }
+        }
+
         return data;
     }
 

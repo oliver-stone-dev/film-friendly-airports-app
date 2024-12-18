@@ -10,5 +10,5 @@ public class ReportDTO
     public int TypeId { get; set; }
     public string? AccountId { get; set; }
     public int TerminalId { get; set; }
-    public string? TimeStamp { get; set; }
+    public DateTime TimeStamp { get; set; }
 }

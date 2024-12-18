@@ -8,5 +8,7 @@ public class ReportType
     public int Id { get; set; }
     [Required]
     public string? Name { get; set; }
+    [Required]
+    public string? AlertText { get; set; }
     public ICollection<Report> Reports { get; } = new List<Report>();
 }

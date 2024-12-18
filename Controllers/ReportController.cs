@@ -61,6 +61,19 @@ public class ReportController : ControllerBase
         return Ok(reportDTOs);
     }
 
+    [HttpGet, Route("/report/alerts")]
+    public ActionResult<IEnumerable<ReportAlertDTO>> GetAlertReports([FromQuery] int terminalId)
+    {
+        var data = _service.GetReportAlertsForTerminal(terminalId);
+
+        if (data == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(data);
+    }
+
     [Authorize]
     [HttpPost]
     public ActionResult<ReportDTO> Add(ReportDTO report)
