@@ -30,12 +30,12 @@ public class AirportService : IAirportService
         var lookupText = $"\"{text}*\"";
 
         FormattableString query =
-            $@"SELECT TOP 10 * FROM dbo.Airports 
+            $@"SELECT TOP 20 * FROM dbo.Airports 
             WHERE CONTAINS (Name,{lookupText}) 
             OR CONTAINS (Code,{lookupText}) 
-            OR CONTAINS (Country,{lookupText});";
+            OR CONTAINS (Country,{lookupText})";
 
-        var data = _database.Airports.FromSql(query).ToList();
+        var data = _database.Airports.FromSql(query).Where(a => a.Terminals.Count() > 0).ToList();
 
         return data;
     }
